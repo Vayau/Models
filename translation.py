@@ -120,5 +120,5 @@ if __name__ == "__main__":
 
 
 #to run
-#python input.py Malyalam.pdf output.pdf ml2en
-#python input.py Malyalam.pdf output.pdf en2ml
+#python trans.py input.pdf output.pdf ml2en 
+#python trans.py input.pdf output.pdf en2ml 

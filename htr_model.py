@@ -3,10 +3,15 @@ import pytesseract
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 from PIL import Image
 import re
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.lib.pagesizes import A4
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe" #For Malayalam
+pytesseract.pytesseract.tesseract_cmd = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
-processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten") #For English
+processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
 model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
 
 def recognize_english(img_crop):
@@ -35,5 +40,17 @@ def process_image(image_path):
     else:
         return text_en if len(text_en) >= len(text_ml) else text_ml
 
-final_text = process_image("Malyalam.jpg")
-print("Final OCR Text:\n", final_text)
+def save_to_pdf(text, filename="ocr_output.pdf"):
+    pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))
+
+    doc = SimpleDocTemplate(filename, pagesize=A4)
+    styles = getSampleStyleSheet()
+    custom_style = ParagraphStyle("Custom", parent=styles["Normal"], fontName="HeiseiMin-W3", fontSize=12)
+
+    flowables = [Paragraph(text, custom_style)]
+    doc.build(flowables)
+
+if __name__ == "__main__":
+    final_text = process_image("ocr_input.jpg")
+    save_to_pdf(final_text, "ocr_output.pdf")
+    print("OCR output saved to ocr_output.pdf")
