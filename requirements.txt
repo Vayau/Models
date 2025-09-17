@@ -1,0 +1,13 @@
+python-magic
+Pillow
+torch
+transformers
+opencv-python
+pytesseract
+reportlab
+numpy
+docx2pdf
+fpdf
+pdfkit
+layoutparser[ocr]
+langdetect

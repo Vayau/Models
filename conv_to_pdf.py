@@ -1,6 +1,6 @@
 import os
 import mimetypes
-from docx2pdf import convert as docx2pdf_convert
+from docx2pdf import convert
 from PIL import Image
 from fpdf import FPDF
 import pdfkit
@@ -14,7 +14,7 @@ def convert_to_pdf(input_path, output_path):
     
     # DOCX
     if mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        docx2pdf_convert(input_path, output_path)
+        convert(input_path, output_path)
 
     # XLSX   
     elif mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
