@@ -4,10 +4,15 @@ torch
 transformers
 opencv-python
 pytesseract
+#For pytesseract, you may need to install Tesseract OCR separately
 reportlab
 numpy
 docx2pdf
 fpdf
 pdfkit
-layoutparser[ocr]
 langdetect
+spacy
+#For spaCy language models, you may need to install them separately
+#Example: python -m spacy download en_core_web_sm
+deep-translator
+PyPDF2
