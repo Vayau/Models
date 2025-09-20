@@ -16,3 +16,4 @@ spacy
 #Example: python -m spacy download en_core_web_sm
 deep-translator
 PyPDF2
+pdfplumber
