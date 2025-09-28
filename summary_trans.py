@@ -28,18 +28,14 @@ class EnglishToMalayalamTranslator:
         if not text or not text.strip():
             return ""
         
-        # Extract URLs first
         url_pattern = re.compile(r'https?://[^\s]+')
         urls = url_pattern.findall(text)
         
-        # Remove URLs from text before translation
         text_without_urls = url_pattern.sub('', text).strip()
         
-        # If text is small, translate directly
         if len(text_without_urls) <= chunk_size:
             translated_text = self.translator.translate(text_without_urls)
         else:
-            # Split into chunks for large texts
             chunks = self._split_text_into_chunks(text_without_urls, chunk_size)
             translated_chunks = []
             
@@ -50,26 +46,22 @@ class EnglishToMalayalamTranslator:
             
             translated_text = ' '.join(translated_chunks)
         
-        # Add URLs back at the end
         if urls:
             translated_text += ' ' + ' '.join(urls)
         
         return translated_text
     
     def _split_text_into_chunks(self, text, chunk_size):
-        # Split by sentences first to maintain meaning
         sentences = re.split(r'(?<=[.!?])\s+', text)
         chunks = []
         current_chunk = ""
         
         for sentence in sentences:
-            # If adding this sentence exceeds chunk size
             if len(current_chunk) + len(sentence) + 1 > chunk_size:
                 if current_chunk:
                     chunks.append(current_chunk.strip())
                     current_chunk = sentence
                 else:
-                    # Single sentence is too long, split by words
                     words = sentence.split()
                     for word in words:
                         if len(current_chunk) + len(word) + 1 > chunk_size:
@@ -77,14 +69,12 @@ class EnglishToMalayalamTranslator:
                                 chunks.append(current_chunk.strip())
                                 current_chunk = word
                             else:
-                                # Single word is too long, just add it
                                 chunks.append(word)
                         else:
                             current_chunk += " " + word if current_chunk else word
             else:
                 current_chunk += " " + sentence if current_chunk else sentence
         
-        # Add remaining chunk
         if current_chunk:
             chunks.append(current_chunk.strip())
         
